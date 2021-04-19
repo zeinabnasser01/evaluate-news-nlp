@@ -21,7 +21,7 @@ function handleSubmit(event) {
       console.log(data);
       document.getElementById(
         "results"
-      ).innerHTML = `confidence: ${data.confidence}, status: ${data.status.msg}`;
+      ).innerHTML = `Confidence: ${data.confidence}, Irony: ${data.irony}, Status message: ${data.status.msg}`;
     })
     .catch((error) => console.log("error", error));
 }
