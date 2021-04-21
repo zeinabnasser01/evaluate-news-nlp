@@ -1,29 +1,33 @@
+import { checkForUrl } from "./urlChecker";
+const handleRequest = (url, data) => {
+  const response = fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .catch((error) => console.log("error", error));
+};
+
 function handleSubmit(event) {
   event.preventDefault();
 
   // check what text was put into the form field
-  let formText = document.getElementById("name").value;
-  Client.checkForName(formText);
-  console.log("::: Form Submitted :::");
+  const formUrl = document.getElementById("url").value;
+  Client.checkForUrl(formUrl);
+  console.log("::: Form Submitted :::" + formUrl);
 
-  const formdata = new FormData();
-  formdata.append("key", "a8c36ceb7690786e164ea25408bc1beb");
-  formdata.append("txt", "front end developerment project");
-  formdata.append("lang", "en"); // 2-letter code, like en es fr ...
-  const requestOptions = {
-    method: "POST",
-    body: formdata,
-    redirect: "follow",
-  };
-  fetch("https://api.meaningcloud.com/sentiment-2.1", requestOptions)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
+  if (checkForUrl(formUrl)) {
+    handleRequest("http://localhost:8080/", { url: formUrl }).then((data) => {
       document.getElementById(
         "results"
-      ).innerHTML = `Confidence: ${data.confidence}, Irony: ${data.irony}, Status message: ${data.status.msg}`;
-    })
-    .catch((error) => console.log("error", error));
+      ).innerHTML = `Confidence: ${data.confidence}, <br> Irony: ${data.irony}, <br> Agreement: ${data.agreement}, <br> Score tag: ${data.score_tag}, <br> Status message: ${data.status.msg}`;
+    });
+  } else {
+    alert("please enter valid url");
+  }
 }
 
 export { handleSubmit };
