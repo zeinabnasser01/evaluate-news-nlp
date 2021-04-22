@@ -3,6 +3,7 @@ const express = require("express");
 const mockAPIResponse = require("./mockAPI.js");
 const dotenv = require("dotenv");
 const axios = require("axios").default;
+var cors = require("cors");
 
 const API = "https://api.meaningcloud.com/sentiment-2.1";
 
@@ -11,18 +12,21 @@ console.log(dotenv.config().parsed.API_KEY);
 console.log(`Your API key is ${process.env.API_KEY}`);
 
 const app = express();
+app.use(cors());
 app.use(express.static("dist"));
 console.log(__dirname);
 
 app.get("/", function (req, res) {
   // res.sendFile("index.html");
-  res.sendFile(path.resolve("src/client/views/index.html"));
+  res.sendFile(path.resolve("dist/index.html"));
 });
 
 app.post("/", function (req, res) {
   const key = dotenv.config().parsed.API_KEY;
   console.log(key);
   const { url } = req.body;
+  console.log(url);
+  // const API_URL = `${API}?key=${key}&url=${url}&lang=en`;
 
   axios
     .post(API, {

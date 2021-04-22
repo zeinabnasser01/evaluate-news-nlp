@@ -6,9 +6,11 @@ const handleRequest = (url, data) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  })
-    .then((response) => response.json())
-    .catch((error) => console.log("error", error));
+  });
+  // .then((response) => response.json())
+  // .catch((error) => console.log("error", error));
+
+  return response;
 };
 
 function handleSubmit(event) {
@@ -20,7 +22,8 @@ function handleSubmit(event) {
   console.log("::: Form Submitted :::" + formUrl);
 
   if (checkForUrl(formUrl)) {
-    handleRequest("http://localhost:8080/", { url: formUrl }).then((data) => {
+    handleRequest("http://localhost:8081/", { url: formUrl }).then((data) => {
+      console.log(data);
       document.getElementById(
         "results"
       ).innerHTML = `Confidence: ${data.confidence}, <br> Irony: ${data.irony}, <br> Agreement: ${data.agreement}, <br> Score tag: ${data.score_tag}, <br> Status message: ${data.status.msg}`;
