@@ -3,6 +3,7 @@ const express = require("express");
 const mockAPIResponse = require("./mockAPI.js");
 const dotenv = require("dotenv");
 const axios = require("axios").default;
+const bodyParser = require("body-parser");
 var cors = require("cors");
 
 const API = "https://api.meaningcloud.com/sentiment-2.1";
@@ -15,6 +16,9 @@ const app = express();
 app.use(cors());
 app.use(express.static("dist"));
 console.log(__dirname);
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get("/", function (req, res) {
   // res.sendFile("index.html");
